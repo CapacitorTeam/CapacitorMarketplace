@@ -1,0 +1,140 @@
+info:
+  title: Capacitor Backen
+  version: 0.0.1
+  description: Backend API for the Capacitor project
+paths:
+  /user:
+    get:
+      summary: Gets a user
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: object
+                title: GetsAUserOk
+          description:
+            The request was successful, and the server has returned the
+            requested resource in the response body.
+        "400":
+          description:
+            The server could not understand the request due to invalid syntax.
+            The client should modify the request and try again.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                      required:
+                        - message
+                required:
+                  - message
+        "404":
+          description: Inform the client that the user object does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+        "500":
+          description:
+            Notifies the user that something went wrong on the server side,
+            tells them to contact developers if the issue continues
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+      parameters:
+        - in: query
+          name: id
+          style: form
+          schema:
+            type: integer
+          explode: true
+          required: false
+          description: The DB id to filter by
+          allowReserved: false
+        - in: query
+          name: username
+          style: form
+          schema:
+            type: string
+          explode: true
+          required: false
+          description: The username of the user to search for
+          allowReserved: false
+        - in: query
+          name: email
+          style: form
+          schema:
+            type: string
+          explode: true
+          required: false
+          description: The email of the user to search for
+          allowReserved: false
+      operationId: getsAUser
+      description: Uses filters provided to retrieve a user
+      tags:
+        - users
+openapi: 3.1.0
+components:
+  responses:
+    BadRequest:
+      description: null
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                    - message
+            required:
+              - message
+    InternalServerErrror:
+      description:
+        The server encountered an unexpected condition that prevented it
+        from fulfilling the request. Report the issue to the support team if it
+        persists.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+tags:
+  - name: users
